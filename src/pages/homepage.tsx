@@ -1,3 +1,3 @@
 export default function Homepage() {
-  return <div>homepage</div>;
+  return <div className="my-10">homepage</div>;
 }
