@@ -1,6 +1,6 @@
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 z-10 min-w-screen">
+    <nav className="fixed top-0 z-20 min-w-screen bg-white">
       <div className="flex h-20 w-full items-center justify-between border-b border-[#DBDBDB] px-4 md:px-6">
         <img src="/logo.png" alt="" />
 
