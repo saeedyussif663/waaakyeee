@@ -5,6 +5,7 @@ import Layout from "./components/layout";
 import "./index.css";
 import AddWaakye from "./pages/add-waakye";
 import Homepage from "./pages/homepage";
+import Waakyedetail from "./pages/waakye-detail";
 
 const routes = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ const routes = createBrowserRouter([
     children: [
       { path: "", element: <Homepage /> },
       { path: "submit", element: <AddWaakye /> },
+      { path: ":id", element: <Waakyedetail /> },
     ],
   },
 ]);
