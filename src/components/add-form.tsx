@@ -1,9 +1,13 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChangeEvent, useState } from "react";
+import { Upload } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "./ui/button";
+
+import uploadImage from "@/lib/upload-image";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Form,
   FormControl,
@@ -33,7 +37,9 @@ const formSchema = z.object({
 });
 
 export default function AddForm() {
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [previewImage, setPreviewImage] = useState(null);
+
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,23 +54,20 @@ export default function AddForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const imageDetails = await uploadImage(values.img);
+    console.log(imageDetails);
   }
 
-  const handleImageChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    onChange: (file: File | null) => void,
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  // @ts-expect-error - "escape callback types"
+  const handleImageChange = (e, onChange) => {
+    const file = e.target.files[0];
     if (file) {
       onChange(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        if (typeof reader.result === "string") {
-          setPreviewImage(reader.result);
-        }
+        // @ts-expect-error - "escape callback types"
+        setPreviewImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -76,7 +79,7 @@ export default function AddForm() {
         <FormField
           control={form.control}
           name="img"
-          render={({ field: { onChange, ...field } }) => (
+          render={({ field: { value, onChange, ...field } }) => (
             <FormItem>
               <FormLabel className="text-sm font-semibold text-[#101928]">
                 Image
@@ -103,17 +106,17 @@ export default function AddForm() {
                     </div>
                   ) : (
                     <div
-                      className="w-full cursor-pointer rounded-md border-2 border-dashed border-[#D0D5DD] p-8 text-center text-[#8C94A6] transition-colors hover:bg-[#8C94A6]/5"
+                      className="w-full cursor-pointer rounded-md border-2 border-dashed border-[#D0D5DD] p-8 text-center transition-colors hover:bg-gray-50"
                       onClick={() =>
                         document.getElementById("image-upload")?.click()
                       }
                     >
-                      <img src="/upload.png" alt="upload" className="mx-auto" />
-                      <p className="mt-2">
-                        Drop or capture images of the place
+                      <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                      <p className="mt-2 text-sm text-gray-500">
+                        Click to upload an image
                       </p>
-                      <p className="text-[8px]">
-                        Supports JPG, JPEG, PNG, and GIF
+                      <p className="text-xs text-gray-400">
+                        JPG, PNG, GIF up to 10MB
                       </p>
                     </div>
                   )}
@@ -178,9 +181,7 @@ export default function AddForm() {
             name="region"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-semibold text-[#101928]">
-                  Region
-                </FormLabel>
+                <FormLabel>Region</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -206,12 +207,7 @@ export default function AddForm() {
             name="city"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-semibold text-[#101928]">
-                  City{" "}
-                  <span className="text-xs font-normal text-[#929292]">
-                    (Optional)
-                  </span>
-                </FormLabel>
+                <FormLabel>City</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -278,7 +274,7 @@ export default function AddForm() {
           type="submit"
           className="mt-4 w-full bg-[#F06225] py-4 text-white hover:bg-[#F06225]"
         >
-          Submit joint{" "}
+          Submit
         </Button>
       </form>
     </Form>

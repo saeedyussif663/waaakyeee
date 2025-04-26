@@ -1,9 +1,28 @@
 import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
 import WaakyeCard from "@/components/ui/waakye";
+import { useQuery } from "@tanstack/react-query";
+import { Loader } from "lucide-react";
 import React from "react";
 
 export default function Homepage() {
+  async function getWaakyes() {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/vendors?lat=5.636096&lng=-0.2162688`,
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw Error(error instanceof Error ? error.message : String(error));
+    }
+  }
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["waakye"],
+    queryFn: getWaakyes,
+  });
+
   return (
     <React.Fragment>
       <Header />
@@ -13,11 +32,18 @@ export default function Homepage() {
         </h1>
 
         <article className="mt-10 flex w-full flex-wrap items-center justify-center gap-6 sm:justify-start xl:gap-12">
-          <WaakyeCard />
-          <WaakyeCard />
-          <WaakyeCard />
-          <WaakyeCard />
-          <WaakyeCard />
+          {isLoading && <Loader className="mx-auto animate-spin" />}
+          {isError && <div className="text-red-500/50">{error.message}</div>}
+          {data.data.length === 0 && (
+            <p className="mx-auto text-lg text-[#1A1A1A]">
+              No vendors at the moment
+            </p>
+          )}
+
+          {data.data.length > 0 &&
+            data?.data.map((waakye: unknown, index: React.Key) => (
+              <WaakyeCard key={index} />
+            ))}
         </article>
 
         <div className="flex w-full">
