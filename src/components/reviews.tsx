@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Reviews() {
   return (
-    <section className="mt-10 w-full space-y-4">
+    <section className="mt-10 w-full space-y-6">
       <h3 className="text-2xl font-semibold text-[#414141]">Reviews</h3>
       <article className="flex flex-wrap items-center justify-center gap-6 md:justify-start">
         <Review />
@@ -10,6 +10,9 @@ export default function Reviews() {
         <Review />
         <Review />
       </article>
+      <div className="mx-auto w-fit cursor-pointer rounded-[12px] border border-[#242424] px-5 py-4">
+        Show all reviews
+      </div>
     </section>
   );
 }

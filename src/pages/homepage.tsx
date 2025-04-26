@@ -12,7 +12,7 @@ export default function Homepage() {
           Find the best waakye plug anywhere
         </h1>
 
-        <article className="mt-10 flex w-full flex-wrap items-center justify-center gap-6 sm:justify-start">
+        <article className="mt-10 flex w-full flex-wrap items-center justify-center gap-6 sm:justify-start xl:gap-12">
           <WaakyeCard />
           <WaakyeCard />
           <WaakyeCard />

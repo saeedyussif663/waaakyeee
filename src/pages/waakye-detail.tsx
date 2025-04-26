@@ -1,7 +1,8 @@
-import Reviews from "@/assets/reviews";
 import WaakyeDetailHeader from "@/components/detail-header";
 import Details from "@/components/details";
 import Ratings from "@/components/ratings";
+import RelatedJoints from "@/components/related-joints";
+import Reviews from "@/components/reviews";
 import React from "react";
 
 export default function Waakyedetail() {
@@ -18,6 +19,7 @@ export default function Waakyedetail() {
         <Reviews />
 
         {/* related joints */}
+        <RelatedJoints />
       </main>
     </React.Fragment>
   );
