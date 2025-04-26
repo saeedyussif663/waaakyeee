@@ -30,8 +30,8 @@ export default function Header() {
   }
 
   return (
-    <article className="fixed top-20 z-10 min-w-screen bg-white">
-      <section className="flex items-center justify-between gap-4 border-b border-[#DBDBDB] px-2 py-5 md:px-6">
+    <article className="fixed top-20 z-10 w-full bg-white">
+      <section className="flex max-w-[1520px] items-center justify-between gap-4 border-b border-[#DBDBDB] px-2 py-5 md:px-6">
         {/* search */}
         <Form {...form}>
           <form

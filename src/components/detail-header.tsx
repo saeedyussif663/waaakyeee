@@ -4,8 +4,8 @@ import { useNavigate } from "react-router";
 export default function WaakyeDetailHeader() {
   const navigate = useNavigate();
   return (
-    <article className="fixed top-20 z-10 min-w-screen bg-white">
-      <div className="flex items-center justify-between gap-4 border-b border-[#DBDBDB] px-2 py-5 md:px-6">
+    <article className="fixed top-20 z-10 w-full bg-white">
+      <div className="flex w-full max-w-[1520px] items-center justify-between gap-4 border-b border-[#DBDBDB] px-2 py-5 md:px-6">
         <div
           className="flex cursor-pointer items-center gap-1"
           onClick={() => navigate(-1)}
