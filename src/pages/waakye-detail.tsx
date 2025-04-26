@@ -1,5 +1,6 @@
 import WaakyeDetailHeader from "@/components/detail-header";
 import Details from "@/components/details";
+import Ratings from "@/components/ratings";
 import React from "react";
 
 export default function Waakyedetail() {
@@ -10,6 +11,7 @@ export default function Waakyedetail() {
         {/* details */}
         <Details />
         {/* stars */}
+        <Ratings />
 
         {/* reviews */}
 
