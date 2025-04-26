@@ -7,9 +7,9 @@ export default function Ratings() {
         <Rate title="Overall Ratings" rate={4.53} />
 
         <Rate title="Overall Ratings" rate={4.53} />
-        <Rate title="Overall Ratings" rate={4.53} />
-        <Rate title="Overall Ratings" rate={4.53} />
-        <Rate title="Overall Ratings" rate={4.53} />
+        <Rate title="Overall Ratings" rate={3.53} />
+        <Rate title="Overall Ratings" rate={2.53} />
+        <Rate title="Overall Ratings" rate={5} />
       </article>
     </section>
   );
@@ -20,11 +20,13 @@ function Rate({ title, rate }: { title: string; rate: number }) {
     <div className="flex flex-col items-center justify-center gap-2 text-[#414141]">
       <h5 className="text-lg font-medium">{title}</h5>
       <div className="flex items-center gap-1">
-        <Star size={20} fill="#363636" />
-        <Star size={20} fill="#363636" />
-        <Star size={20} />
-        <Star size={20} />
-        <Star size={20} />
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Star
+            key={index}
+            fill={rate >= index + 1 ? "#373737" : "rgba(155, 155, 155, 0.2)"}
+            strokeWidth={0}
+          />
+        ))}
       </div>
       <h1 className="text-[40px] font-semibold">{rate}</h1>
     </div>
