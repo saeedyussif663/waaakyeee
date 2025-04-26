@@ -31,22 +31,22 @@ export default function Header() {
 
   return (
     <article className="fixed top-20 z-10 w-full bg-white">
-      <section className="flex max-w-[1520px] items-center justify-between gap-4 border-b border-[#DBDBDB] px-2 py-5 md:px-6">
+      <section className="flex max-w-[1520px] flex-col-reverse justify-between gap-4 border-b border-[#DBDBDB] px-2 py-5 md:flex-row md:items-center md:px-6">
         {/* search */}
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="relative flex"
+            className="relative flex w-full md:w-auto"
           >
             <FormField
               control={form.control}
               name="query"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormControl>
                     <Input
                       placeholder="Search for a joint "
-                      className="h-[54px] rounded-[12px] border-[0.5px] border-[#CDCDCD] p-2 text-[#A7A7A7] placeholder:text-[#A7A7A7] focus-visible:ring-0 md:w-[500px]"
+                      className="h-[54px] w-full rounded-[12px] border-[0.5px] border-[#CDCDCD] p-2 text-[#A7A7A7] placeholder:text-[#A7A7A7] focus-visible:ring-0 md:w-[500px]"
                       {...field}
                     />
                   </FormControl>
@@ -65,7 +65,7 @@ export default function Header() {
         </Form>
 
         {/* location */}
-        <article className="flex flex-col items-center gap-4 sm:flex-row">
+        <article className="flex w-full flex-row items-center justify-between gap-4 md:w-auto">
           <div className="flex items-center justify-center gap-2 rounded-[8px] border-[0.5px] border-[#BEBEBE] px-4 py-3 text-sm text-[#3D3D3D] sm:text-base">
             <SlidersHorizontal size={16} className="rotate-90" />
             <p>Filter</p>
