@@ -1,5 +1,6 @@
 "use client";
 
+import { useGlobalContext } from "@/context/context";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MapPin, Search, SlidersHorizontal } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -18,6 +19,8 @@ const formSchema = z.object({
 });
 
 export default function Header() {
+  const { location, setShowOverlay } = useGlobalContext();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -75,7 +78,16 @@ export default function Header() {
 
           <div className="flex items-center justify-center gap-2 text-sm text-[#3D3D3D] sm:text-base">
             <MapPin size={20} />
-            <p>Allow location</p>
+            {location.town ? (
+              <p>{location.town}</p>
+            ) : (
+              <p
+                className="cursor-pointer"
+                onClick={() => setShowOverlay(true)}
+              >
+                Allow access
+              </p>
+            )}
           </div>
         </article>
       </section>

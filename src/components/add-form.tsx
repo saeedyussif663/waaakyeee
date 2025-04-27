@@ -6,8 +6,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "./ui/button";
 
+import { useGlobalContext } from "@/context/context";
 import uploadImage from "@/lib/upload-image";
-import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
 import {
   Form,
   FormControl,
@@ -26,6 +27,25 @@ import {
 } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 
+const ghanaRegions = [
+  "Greater Accra",
+  "Ashanti",
+  "Eastern",
+  "Western",
+  "Western North",
+  "Central",
+  "Volta",
+  "Oti",
+  "Northern",
+  "Savannah",
+  "North East",
+  "Upper East",
+  "Upper West",
+  "Bono",
+  "Ahafo",
+  "Bono East",
+];
+
 const formSchema = z.object({
   img: z.any().optional(),
   name: z.string().min(1, { message: "name is required" }),
@@ -34,12 +54,18 @@ const formSchema = z.object({
   city: z.string().min(1, { message: "city is required" }),
   location: z.string().min(1, { message: "location is required" }),
   description: z.string().min(1, { message: "description is required" }),
+  operating_hours: z
+    .string()
+    .min(1, { message: "operating hours is required" }),
+  street_address: z.string().min(1, { message: "street address is required" }),
 });
 
 export default function AddForm() {
   const [previewImage, setPreviewImage] = useState(null);
+  const { location, setShowOverlay } = useGlobalContext();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,12 +77,54 @@ export default function AddForm() {
       city: "",
       location: "",
       description: "",
+      operating_hours: "",
+      street_address: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const imageDetails = await uploadImage(values.img);
-    console.log(imageDetails);
+    if (!location.latitude || !location.longitude) {
+      setShowOverlay(true);
+    }
+    setIsLoading(true);
+    const imageUrl = await uploadImage(values.img);
+    const body = {
+      image_url: imageUrl,
+      description: values.description,
+      phone_number: values.number,
+      name: values.name,
+      operating_hours: values.operating_hours,
+      location: {
+        city: values.city,
+        latitude: location.latitude,
+        longitude: location.longitude,
+        region: values.region,
+        street_address: values.street_address,
+      },
+    };
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/vendors`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        },
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        const data = await response.json();
+        alert(data.message);
+        navigate("/");
+      } else {
+        alert("An error occured creating vendor");
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // @ts-expect-error - "escape callback types"
@@ -192,10 +260,11 @@ export default function AddForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="greater-accra">Greater Accra</SelectItem>
-                    <SelectItem value="ashanti">Ashanti</SelectItem>
-                    <SelectItem value="eastern">Eastern</SelectItem>
-                    <SelectItem value="western">Western</SelectItem>
+                    {ghanaRegions.map((region, index) => (
+                      <SelectItem key={index} value={region}>
+                        {region}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -208,27 +277,39 @@ export default function AddForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>City</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select city" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="accra">Accra</SelectItem>
-                    <SelectItem value="kumasi">Kumasi</SelectItem>
-                    <SelectItem value="takoradi">Takoradi</SelectItem>
-                    <SelectItem value="tamale">Tamale</SelectItem>
-                  </SelectContent>
-                </Select>
+
+                <FormControl>
+                  <Input
+                    placeholder="Enter city"
+                    {...field}
+                    className="rounded-[6px] border border-[#D0D5DD] p-4 placeholder:text-[#98A2B3] focus-visible:ring-0"
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
+
+        <FormField
+          control={form.control}
+          name="operating_hours"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-semibold text-[#101928]">
+                Operating hours
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="8:00am to 10:00pm"
+                  {...field}
+                  className="rounded-[6px] border border-[#D0D5DD] p-4 placeholder:text-[#98A2B3] focus-visible:ring-0"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
@@ -241,6 +322,26 @@ export default function AddForm() {
               <FormControl>
                 <Input
                   placeholder="Enter exact location e.g. Near the big tree at Atomic Junction"
+                  {...field}
+                  className="rounded-[6px] border border-[#D0D5DD] p-4 placeholder:text-[#98A2B3] focus-visible:ring-0"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="street_address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-semibold text-[#101928]">
+                Street address
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="waakye street"
                   {...field}
                   className="rounded-[6px] border border-[#D0D5DD] p-4 placeholder:text-[#98A2B3] focus-visible:ring-0"
                 />
@@ -274,7 +375,7 @@ export default function AddForm() {
           type="submit"
           className="mt-4 w-full bg-[#F06225] py-4 text-white hover:bg-[#F06225]"
         >
-          Submit
+          {isLoading ? "Submitting.." : "Submit"}
         </Button>
       </form>
     </Form>
