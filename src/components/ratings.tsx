@@ -1,15 +1,22 @@
+import { Vendor } from "@/lib/utils";
 import { Star } from "lucide-react";
 
-export default function Ratings() {
+export default function Ratings({
+  average_rating,
+  average_hygiene_rating,
+  average_service_rating,
+  average_taste_rating,
+  average_value_rating,
+}: Vendor) {
   return (
     <section className="mt-10 w-full border-y border-[#CACACA] px-2 py-4">
       <article className="flex flex-wrap items-center justify-center gap-8 md:justify-between">
-        <Rate title="Overall Ratings" rate={4.53} />
+        <Rate title="Overall Ratings" rate={average_rating} />
 
-        <Rate title="Overall Ratings" rate={4.53} />
-        <Rate title="Overall Ratings" rate={3.53} />
-        <Rate title="Overall Ratings" rate={2.53} />
-        <Rate title="Overall Ratings" rate={5} />
+        <Rate title="Hygiene" rate={average_hygiene_rating} />
+        <Rate title="Service" rate={average_service_rating} />
+        <Rate title="Value" rate={average_value_rating} />
+        <Rate title="Taste" rate={average_taste_rating} />
       </article>
     </section>
   );

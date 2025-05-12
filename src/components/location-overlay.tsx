@@ -8,7 +8,6 @@ export default function LocationOverlay() {
 
   function handleAllowAccess() {
     if ("geolocation" in navigator) {
-      console.log("clicked");
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const res = await fetch(
