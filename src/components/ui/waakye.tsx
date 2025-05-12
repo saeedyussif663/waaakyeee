@@ -22,7 +22,7 @@ export default function WaakyeCard({
         <p className="font-medium">{location?.city}</p>
         <div className="flex items-center gap-2 font-semibold">
           <Star size={20} fill="#FFB627" strokeWidth={0} />
-          <p>{average_rating}</p>
+          <p>{average_rating.toFixed(2)}</p>
         </div>
       </div>
     </Link>

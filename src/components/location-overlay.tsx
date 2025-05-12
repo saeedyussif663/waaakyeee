@@ -23,7 +23,7 @@ export default function LocationOverlay() {
           setLocation({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-            town: data.address.town || data.display_name,
+            town: data.address.town || data.display_name.split(",")[0],
           });
           setShowOverlay(false);
         },

@@ -2,7 +2,7 @@
 
 import { useGlobalContext } from "@/context/context";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MapPin, Search, SlidersHorizontal } from "lucide-react";
+import { MapPin, Search } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "./ui/button";
@@ -69,13 +69,6 @@ export default function Header() {
 
         {/* location */}
         <article className="flex w-full flex-row items-center justify-between gap-4 md:w-auto">
-          <div className="flex items-center justify-center gap-2 rounded-[8px] border-[0.5px] border-[#BEBEBE] px-4 py-3 text-sm text-[#3D3D3D] sm:text-base">
-            <SlidersHorizontal size={16} className="rotate-90" />
-            <p>Filter</p>
-          </div>
-
-          <div className="size-1 rounded-full bg-[#A8A8A8]"></div>
-
           <div className="flex items-center justify-center gap-2 text-sm text-[#3D3D3D] sm:text-base">
             <MapPin size={20} />
             {location.town ? (
