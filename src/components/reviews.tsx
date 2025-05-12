@@ -1,37 +1,63 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Rating, Vendor } from "@/lib/utils";
+import { PlusCircle, X } from "lucide-react";
+import { useState } from "react";
+import AddReviewForm from "./add-review";
+import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 
-export default function Reviews() {
+export default function Reviews({ ratings }: Vendor) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <section className="mt-10 w-full space-y-6">
-      <h3 className="text-2xl font-semibold text-[#414141]">Reviews</h3>
-      <article className="flex flex-wrap items-center justify-center gap-6 md:justify-start">
-        <Review />
-        <Review />
-        <Review />
-        <Review />
-      </article>
-      <div className="mx-auto w-fit cursor-pointer rounded-[12px] border border-[#242424] px-5 py-4">
-        Show all reviews
+      <div className="flex justify-between">
+        <h3 className="text-2xl font-semibold text-[#414141]">Reviews</h3>
+
+        <Dialog open={isOpen}>
+          <DialogTrigger asChild>
+            <Button
+              className="flex items-center justify-center gap-2 rounded-[8px] bg-[#171717] px-3 py-2 text-white"
+              onClick={() => setIsOpen(true)}
+            >
+              <PlusCircle size={16} />
+              <span>Leave a review</span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-h-[95vh] overflow-y-scroll">
+            <div className="flex justify-between">
+              <div className="space-y-2 text-[#3D3D3D]">
+                <h4 className="text-2xl font-semibold md:text-4xl">
+                  Leave a review
+                </h4>
+                <p className="text-sm md:text-base">
+                  Review and rate the seller based on your experience.
+                </p>
+              </div>
+
+              <X size={18} color="#3D3D3D" onClick={() => setIsOpen(false)} />
+            </div>
+
+            <AddReviewForm setIsOpen={setIsOpen} />
+          </DialogContent>
+        </Dialog>
       </div>
+
+      <article className="flex flex-wrap items-center justify-center gap-6 md:justify-start">
+        {ratings?.length === 0 && <p>No ratings</p>}
+        {ratings?.map((rate) => <Review key={rate.ID} {...rate} />)}
+      </article>
     </section>
   );
 }
 
-function Review() {
-  return (
-    <div className="w-full space-y-3 rounded-2xl border border-[#F5F5F5] p-2 md:max-w-[566px]">
-      <Avatar className="size-10">
-        <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
+function Review({ Comment }: Rating) {
+  const show = Comment.trim().length > 0;
 
-      <h1 className="text-2xl font-semibold text-[#1A1A1A]">Miles, Esther</h1>
-
-      <p className="text-sm text-[#333333] md:text-base">
-        It's a very peaceful location, and the food is perfect for lunch and
-        supper. Since I found this place I haven't prepared lunch ever. Their
-        delivery is the best.{" "}
-      </p>
-    </div>
-  );
+  if (show) {
+    return (
+      <div className="w-full space-y-3 rounded-md border border-[#F5F5F5] p-4 md:max-w-[566px]">
+        <p className="text-sm text-[#333333] md:text-base">{Comment}</p>
+      </div>
+    );
+  }
 }

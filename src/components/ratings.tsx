@@ -35,7 +35,7 @@ function Rate({ title, rate }: { title: string; rate: number }) {
           />
         ))}
       </div>
-      <h1 className="text-[40px] font-semibold">{rate}</h1>
+      <h1 className="text-[40px] font-semibold">{rate.toFixed(2)}</h1>
     </div>
   );
 }

@@ -17,18 +17,14 @@ interface Location {
 }
 
 // Rating type (assuming this is what 'ratings' would contain when not null)
-interface Rating {
-  id: string;
-  user_id: string;
-  vendor_id: string;
-  overall_rating: number;
-  hygiene_rating: number;
-  value_rating: number;
-  taste_rating: number;
-  service_rating: number;
-  comment: string;
-  created_at: string;
-  updated_at: string;
+export interface Rating {
+  Comment: string;
+  CreatedAt: string;
+  HygieneRating: number;
+  ID: string;
+  ServiceRating: number;
+  TasteRating: number;
+  ValueRating: number;
 }
 
 // Main Vendor type definition
@@ -49,5 +45,5 @@ export interface Vendor {
   average_value_rating: number;
   average_taste_rating: number;
   average_service_rating: number;
-  ratings: Rating[] | null;
+  ratings: Rating[];
 }

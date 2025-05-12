@@ -32,8 +32,6 @@ export default function Waakyedetail() {
     queryFn: getWaakye,
   });
 
-  console.log(data.data);
-
   return (
     <React.Fragment>
       <WaakyeDetailHeader />
@@ -50,7 +48,7 @@ export default function Waakyedetail() {
             <Ratings {...data?.data} />
 
             {/* reviews */}
-            <Reviews />
+            <Reviews {...data?.data} />
           </div>
         )}
 

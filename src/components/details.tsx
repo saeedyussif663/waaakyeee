@@ -1,5 +1,5 @@
 import { Vendor } from "@/lib/utils";
-import { CalendarDays, MapPin, MoveUpRight, Phone } from "lucide-react";
+import { CalendarDays, MapPin, Phone } from "lucide-react";
 
 export default function Details({
   name,
@@ -36,10 +36,6 @@ export default function Details({
               <h5 className="font-semibold">{location.city}</h5>
               <p className="text-xs">{location.street_address}</p>
             </div>
-          </div>
-          <div className="flex items-center justify-between gap-2 rounded-[5px] border-[0.5px] border-[#DBDBDB] bg-[#FAFAFA] px-2 py-1">
-            View on map
-            <MoveUpRight size={16} />
           </div>
         </article>
 
