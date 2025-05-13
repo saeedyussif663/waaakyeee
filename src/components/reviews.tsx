@@ -43,7 +43,7 @@ export default function Reviews({ ratings }: Vendor) {
       </div>
 
       <article className="flex flex-wrap items-center justify-center gap-6 md:justify-start">
-        {ratings?.length === 0 && <p>No ratings</p>}
+        {ratings === null && <p>No ratings</p>}
         {ratings?.map((rate) => <Review key={rate.ID} {...rate} />)}
       </article>
     </section>
